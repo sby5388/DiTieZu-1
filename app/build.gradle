@@ -1,141 +1,65 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
+//apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
-    buildToolsVersion project.BUILD_TOOLS_VERSION
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.sendtion.ditiezu"
-        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
-        versionCode Integer.parseInt(project.VERSION_CODE)
-        versionName project.VERSION_NAME
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 5
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    //签名配置
-    signingConfigs {
-        release {
-            storeFile file(project.STORE_FILE)
-            storePassword project.STORE_PASSWORD
-            keyAlias project.KEY_ALIAS
-            keyPassword project.KEY_PASSWORD
-        }
-        debug {
-            storeFile file(project.STORE_FILE)
-            storePassword project.STORE_PASSWORD
-            keyAlias project.KEY_ALIAS
-            keyPassword project.KEY_PASSWORD
-        }
-    }
-
     buildTypes {
-        debug {
-            buildConfigField "boolean", "IS_DEBUG", "true"
-            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
-            buildConfigField "boolean", "IS_SHOW_LOG", "true"  //显示log
-            //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
-            versionNameSuffix "-debug"  //版本号加上debug
-            minifyEnabled false
-            shrinkResources false
-            signingConfig signingConfigs.debug //签名
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         release {
-            buildConfigField "boolean", "IS_DEBUG", "false"
-            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
-            buildConfigField "boolean", "IS_SHOW_LOG", "false" //不显示log
-            //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
-            minifyEnabled false//混淆打包
-            zipAlignEnabled true //Zipalign优化
-            shrinkResources false//去掉不用资源
-            signingConfig signingConfigs.release //签名
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //定义输入apk格式
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为app_v1.0_2015-xx-xx_xxxx.apk
-                        //def fileName = "app_v${defaultConfig.versionName}_${releaseTime()}.apk"
-                        def fileName = "ditiezu_${defaultConfig.versionName}_${defaultConfig.versionCode}_${variant.productFlavors[0].name}.apk"
-                        //def fileName = "时光笔记_v${defaultConfig.versionName}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
-                }
-            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+    }
+    sourceSets{
+        main{
+            res.srcDirs=["src/main/res","src/main/adblockres"]
         }
     }
 
-    //这个是解决lint报错的代码
-    lintOptions {
-        abortOnError false
-        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
-        disable 'MissingTranslation'
-    }
 
-    productFlavors {
-        qq {}
-//        firm {}
-//        xiaomi {}
-//        huawei {}
-//        baidu {}
-//        _91 {}
-//        anzhuo {}
-//        anzhi {}
-//        yingyongbao {}
-//        meizu {}
-//        ku_an {}
-//        _360 {}
-
-//        chuizi {}
-//        leyuan {}
-//        google {}
-//        lenovo {}
-//        oppo {}
-//        vivo {}
-//        yingyonghui {}
-    }
-
-    productFlavors.all {
-        flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
-    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':adblockwebview')
 
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:recyclerview-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'org.jsoup:jsoup:1.11.3'
-    compile 'org.greenrobot:eventbus:3.1.1'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'com.android.support:recyclerview-v7:23.4.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    testImplementation'junit:junit:4.12'
 
-    //compile 'com.umeng.sdk:common:latest.integration'
-    //compile 'com.umeng.sdk:analytics:latest.integration'
-    compile 'com.umeng.sdk:common:1.5.3'
-    compile 'com.umeng.sdk:analytics:7.5.3'
+    implementation'com.umeng.sdk:common:1.5.3'
+    implementation'com.umeng.sdk:analytics:7.5.3'
 
-    compile 'com.jcodecraeer:xrecyclerview:1.5.9'
-    compile 'com.github.GrenderG:Toasty:1.3.0'
+    implementation'com.jcodecraeer:xrecyclerview:1.5.9'
+    implementation'com.github.GrenderG:Toasty:1.3.0'
 
-    compile 'com.just.agentweb:agentweb:4.0.2' // (必选)
-    compile 'com.just.agentweb:download:4.0.2' // (可选)
-    compile 'com.just.agentweb:filechooser:4.0.2'// (可选)
+    implementation'com.just.agentweb:agentweb:4.0.2' // (必选)
+    implementation'com.just.agentweb:download:4.0.2' // (可选)
+    implementation'com.just.agentweb:filechooser:4.0.2'// (可选)
 
-    compile 'com.lzy.net:okgo:3.0.4'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    implementation'com.lzy.net:okgo:3.0.4'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
 
-    compile 'com.github.yjfnypeu:UpdatePlugin:3.1.0'
-    compile 'com.github.razerdp:BasePopup:1.9.4'
+    implementation'com.github.yjfnypeu:UpdatePlugin:3.1.0'
+    implementation'com.github.razerdp:BasePopup:1.9.4'
 }

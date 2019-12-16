@@ -19,8 +19,6 @@ import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * 地铁族
  * http://www.ditiezu.com/forum.php?gid=2   都市地铁 列表
@@ -29,9 +27,7 @@ public class MainActivity extends BaseActivity {
 
     private String subwayUrl = "http://www.ditiezu.com/forum.php?gid=2";
 
-    @BindView(R.id.rv_list_subway)
     RecyclerView mListSubway;
-    @BindView(R.id.swipe_fresh_subway)
     SwipeRefreshLayout swipeRefreshSubway;
 
     private MySubwayListAdapter mAdapter;
@@ -41,10 +37,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate(R.layout.activity_main);
+        mListSubway = findViewById(R.id.rv_list_subway);
+        swipeRefreshSubway = findViewById(R.id.swipe_fresh_subway);
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         mDatas = new ArrayList<>();
 
         setTitle("地铁族");
@@ -53,7 +51,7 @@ public class MainActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mListSubway.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecoration.setDrawable(new ColorDrawable(ContextCompat.getColor(this,R.color.color_d)));
+        itemDecoration.setDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.color_d)));
         mListSubway.addItemDecoration(itemDecoration); //设置分割线
 
         mAdapter = new MySubwayListAdapter();
@@ -68,7 +66,7 @@ public class MainActivity extends BaseActivity {
                 if (subwayListEntry != null) {
                     Intent intent = new Intent(MainActivity.this, PostListActivity.class);
                     intent.putExtra("subway_url", subwayListEntry.getSubway_url());
-                    intent.putExtra("subway_name", subwayListEntry.getSubway_name()+subwayListEntry.getToday_post());
+                    intent.putExtra("subway_name", subwayListEntry.getSubway_name() + subwayListEntry.getToday_post());
                     startActivity(intent);
                 }
             }
@@ -103,7 +101,7 @@ public class MainActivity extends BaseActivity {
         UpdateBuilder.create().check();
     }
 
-    private void getSubwayListData(){
+    private void getSubwayListData() {
         new Thread(new Runnable() {
             @Override
             public void run() {

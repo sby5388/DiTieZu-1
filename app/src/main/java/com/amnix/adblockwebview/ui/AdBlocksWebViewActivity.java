@@ -48,12 +48,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amnix.adblockwebview.R;
 import com.amnix.adblockwebview.presenter.WebViewPresenterImpl;
 import com.amnix.adblockwebview.util.AdBlocker;
 import com.amnix.adblockwebview.util.ClipboardUtils;
 import com.amnix.adblockwebview.util.FileUtils;
 import com.amnix.adblockwebview.util.PermissionUtils;
+import com.sendtion.ditiezu.R;
 
 import java.util.HashMap;
 import java.util.Map;

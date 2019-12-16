@@ -18,17 +18,14 @@ import android.widget.RelativeLayout;
 import com.sendtion.ditiezu.R;
 import com.sendtion.ditiezu.util.ADFilterTool;
 
-import butterknife.BindView;
-
 /**
  * 加载网页
  * https://github.com/JakePrim/PrimWeb
  */
 public class WebViewActivity extends BaseActivity {
 
-    private static final String TAG = "@@@@@@";
+    private static final String TAG = "WebViewActivity";
 
-    @BindView(R.id.layout_web)
     RelativeLayout layoutWeb;
 
     //private PrimWeb primWeb;
@@ -39,6 +36,7 @@ public class WebViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate(R.layout.activity_web_view);
+        layoutWeb = findViewById(R.id.layout_web);
     }
 
     @Override
@@ -55,9 +53,9 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             String post_url = intent.getStringExtra("post_url");
-            Log.e(TAG, "post_url: " + post_url );
+            Log.e(TAG, "post_url: " + post_url);
 
 //            primWeb = PrimWeb.with(this)
 //                    .setWebParent(layoutWeb, new ViewGroup.LayoutParams(
@@ -150,12 +148,12 @@ public class WebViewActivity extends BaseActivity {
         }
 
         @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url){
-            url= url.toLowerCase();
-            if(!ADFilterTool.hasAd(view.getContext(),url)){
-                return super.shouldInterceptRequest(view,url);
-            }else{
-                return new WebResourceResponse(null,null,null);
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            url = url.toLowerCase();
+            if (!ADFilterTool.hasAd(view.getContext(), url)) {
+                return super.shouldInterceptRequest(view, url);
+            } else {
+                return new WebResourceResponse(null, null, null);
             }
         }
 
@@ -173,12 +171,12 @@ public class WebViewActivity extends BaseActivity {
     /**
      * 去除网页广告
      */
-    public static String getClearAdDivJs(Context context){
+    public static String getClearAdDivJs(Context context) {
         String js = "javascript:";
         Resources res = context.getResources();
         String[] adDivs = res.getStringArray(R.array.adBlockDiv);
-        for(int i=0;i<adDivs.length;i++){
-            js += "var adDiv"+i+"= document.getElementsByClassName('"+adDivs[i]+"');if(adDiv"+i+" != null)adDiv"+i+".parentNode.removeChild(adDiv"+i+");";
+        for (int i = 0; i < adDivs.length; i++) {
+            js += "var adDiv" + i + "= document.getElementsByClassName('" + adDivs[i] + "');if(adDiv" + i + " != null)adDiv" + i + ".parentNode.removeChild(adDiv" + i + ");";
         }
         return js;
     }

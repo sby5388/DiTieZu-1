@@ -21,7 +21,6 @@ import com.sendtion.ditiezu.util.JsoupUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
 
 public class PostListActivity extends BaseActivity implements XRecyclerView.LoadingListener {
@@ -30,9 +29,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
     private String baseUrl;
     private String subwayUrl;
 
-    @BindView(R.id.rv_list_post)
     XRecyclerView mListPost;
-    @BindView(R.id.swipe_fresh_post)
     SwipeRefreshLayout swipeRefreshPost;
 
     private MyPostListAdapter mAdapter;
@@ -43,10 +40,12 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreate(R.layout.activity_post_list);
+        mListPost = findViewById(R.id.rv_list_post);
+        swipeRefreshPost = findViewById(R.id.swipe_fresh_post);
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -62,10 +61,10 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
         setTitle(subwayName);
 
         //http://www.ditiezu.com/forum-64-1.html
-        String currentPage = subwayUrl.substring(subwayUrl.lastIndexOf("-")+1, subwayUrl.indexOf(SUFFIX));
+        String currentPage = subwayUrl.substring(subwayUrl.lastIndexOf("-") + 1, subwayUrl.indexOf(SUFFIX));
         //Log.e("@@@", "currentPage: " + currentPage );
         //Log.e("@@@", "url: " +  subwayUrl.substring(0, subwayUrl.lastIndexOf("-")+1));
-        baseUrl = subwayUrl.substring(0, subwayUrl.lastIndexOf("-")+1);
+        baseUrl = subwayUrl.substring(0, subwayUrl.lastIndexOf("-") + 1);
         page = Integer.valueOf(currentPage);
 
         mDatas = new ArrayList<>();
@@ -74,7 +73,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mListPost.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecoration.setDrawable(new ColorDrawable(ContextCompat.getColor(this,R.color.color_d)));
+        itemDecoration.setDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.color_d)));
         mListPost.addItemDecoration(itemDecoration); //设置分割线
         mListPost.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mListPost.setPullRefreshEnabled(false);
@@ -120,7 +119,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
         refreshPostListData();
     }
 
-    private void refreshPostListData(){
+    private void refreshPostListData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -138,7 +137,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
         }).start();
     }
 
-    private void loadPostListData(){
+    private void loadPostListData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -166,7 +165,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
@@ -187,7 +186,7 @@ public class PostListActivity extends BaseActivity implements XRecyclerView.Load
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mListPost != null){
+        if (mListPost != null) {
             mListPost.destroy(); // this will totally release XR's memory
             mListPost = null;
         }

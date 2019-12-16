@@ -23,7 +23,7 @@ import es.dmoral.toasty.Toasty;
 public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog loadingDialog;
 
-    public void onCreate(@Nullable int resourceId) {
+    public void onCreate(int resourceId) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(resourceId);
 
@@ -44,17 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void initActivity() {
         // 添加Activity到堆栈
         AppManager.getAppManager().addActivity(this);
-        //初始化EventBus
-        if (isBindEventBus() && !EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-        //初始化ButterKnife
-        ButterKnife.bind(this);
     }
 
-    protected boolean isBindEventBus() {
-        return false;
-    }
 
     protected void showProgressDialog() {
         if (loadingDialog == null) {
